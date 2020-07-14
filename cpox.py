@@ -137,20 +137,6 @@ mw = {'H': 1.008, 'O': 15.999, 'C': 12.011}
 # where the data will be stored
 integration_flux_data = defaultdict(float)
 
-def get_composition(species):
-    """
-    gets the composition of a species
-    """
-    try:
-        index = gas.species_index(species)
-        sp = gas.species(index)
-        return sp.composition
-    except:
-        index = surf.species_index(species)
-        sp = surf.species(index)
-        return sp.composition
-
-
 surf.set_multiplier(0.0)  # no surface reactions until the gauze
 for n in range(NReactors):
     # Set the state of the reservoir to match that of the previous reactor
@@ -187,11 +173,8 @@ for n in range(NReactors):
                 if net == 0.0:
                     continue
 
-                # find the count of element in the species
-                s1_composition = get_composition(s1)
-
                 # multiply by atomic mass of the element
-                net = float(fwd) * mw[element] * s1_composition[element]
+                net = float(fwd) * mw[element]
 
                 # for surface reactions, multiply by the catalyst area per volume in a reactor
                 if i == 0:
